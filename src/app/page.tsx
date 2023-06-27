@@ -93,9 +93,13 @@ export default function Home() {
             Favorites
           </Typography>
           <FavoritesContainer>
-            {fav.map((city) => (
+            {fav.length > 1 ? fav.map((city) => (
               <FavoriteWeatherCard key={city} currentCity={city} />
-            ))}
+            )):
+            <Typography mt={"20px"} mb={"20px"} color={"gray"} variant="subtitle2">
+            No favorite cities
+          </Typography>
+            }
           </FavoritesContainer>
           <HistoryContainer>
             <HistoryTitle variant="h3">History</HistoryTitle>

@@ -6,7 +6,7 @@ import { WeatherProps, setInicialCity } from "../redux/weatherSlice";
 
 import { WeatherCardProps } from "./weatherCard";
 
-function Preloader({ weather }: { weather: WeatherProps }) {
+function Preloader({ weather }: { weather: WeatherCardProps }) {
   const loaded = useRef(false);
   if (!loaded.current) {
     store.dispatch(setInicialCity(weather));
