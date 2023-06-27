@@ -15,15 +15,13 @@ export default function Home() {
   const main = useAppSelector((state) => state.weatherReducer.weatherApi.main);
   const weather = useAppSelector((state) => state.weatherReducer.weatherApi.weather);
   const fav = useAppSelector((state) => state.weatherReducer.favoriteCities);
-  console.log(fav,"fav") ;
+
   
   const [currentCity, setCurrentCity] = useState('belo horizonte');
 
   const handleSubmit = (city: string) => {
     setCurrentCity(city);
   };
-
-
   // useEffect(() => {
   //   if ('geolocation' in navigator) {
   //     navigator.geolocation.getCurrentPosition(
