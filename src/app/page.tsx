@@ -1,50 +1,65 @@
 'use client'
 
-import { setInicialCity } from "./redux/weatherSlice";
+import { styled } from "@mui/system";
+import { Button, Typography, List, ListItem } from "@mui/material";
+import { setInicialCity, addToSearchHistory } from "./redux/weatherSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { useGetWeatherQuery } from "./redux/services/weatherApi";
 import WeatherCard from "./components/weatherCard";
 import { useEffect, useState } from "react";
-import { TextField, Button, Grid } from "@mui/material";
 import Form from "./components/form";
-import Link from "next/link";
 import FavoriteWeatherCard from "./components/favoriteCard";
 
+const MainContainer = styled("main")`
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 20px;
+`;
+
+const LoadingText = styled(Typography)`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: gray;
+`;
+
+const ContentContainer = styled("div")`
+  margin-bottom: 4rem;
+  text-align: center;
+`;
+
+const FavoritesContainer = styled("div")`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+`;
+
+const HistoryContainer = styled("div")`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const HistoryTitle = styled(Typography)`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: gray;
+`;
+
+const StyledButton = styled(Button)`
+  && {
+    display: block;
+    margin-bottom: 10px;
+  }
+`;
+
 export default function Home() {
-
-    // useEffect(() => {
-  //   if ('geolocation' in navigator) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         const latitude = position.coords.latitude;
-  //         const longitude = position.coords.longitude;
-
-  //         fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=23d23199932041c5a9f9ce2abef4678c`)
-  //           .then((response) => response.json())
-  //           .then((data) => {
-  //             const city = data.results[0].components.city;
-  //             setCurrentCity(city); // Atualiza a cidade atual
-  //           })
-  //           .catch((error) => {
-  //             console.error("Erro ao obter a cidade atual:", error);
-  //           });
-  //       },
-  //       (error) => {
-  //         console.error('Erro ao obter a localização:', error);
-  //       }
-  //     );
-  //   } else {
-  //     console.error('Geolocalização não é suportada no navegador.');
-  //   }
-  // }, []);
   const dispatch = useAppDispatch();
   const name = useAppSelector((state) => state.weatherReducer.weatherApi.name);
   const main = useAppSelector((state) => state.weatherReducer.weatherApi.main);
   const weather = useAppSelector((state) => state.weatherReducer.weatherApi.weather);
   const fav = useAppSelector((state) => state.weatherReducer.favoriteCities);
-  console.log(fav);
-
-  
+  const searchHistory = useAppSelector((state) => state.weatherReducer.searchHistory);
   const [currentCity, setCurrentCity] = useState('belo horizonte');
 
   const handleSubmit = (city: string) => {
@@ -56,23 +71,47 @@ export default function Home() {
   useEffect(() => {
     if (data) {
       dispatch(setInicialCity(data));
+      if (!searchHistory.includes(currentCity)) {
+        dispatch(addToSearchHistory(currentCity));
+      }
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, currentCity, searchHistory]);
+
+  const capitalize = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   return (
-    <main style={{ maxWidth: 1200, marginInline: "auto", padding: 20 }}>
+    <MainContainer>
       {isLoading || isFetching ? (
-        <p>Loading...</p>
+        <LoadingText variant="h3">Loading...</LoadingText>
       ) : data ? (
-        <div style={{ marginBottom: "4rem", textAlign: "center" }}>
+        <ContentContainer>
           <Form onSubmit={handleSubmit} />
           <WeatherCard name={name} main={main} weather={weather} />
-          {fav.map((city) => (
-            <FavoriteWeatherCard key={city} currentCity={city} />
-          ))}
-          <Link href="/favorites">Favorites</Link>
-        </div>
+          <Typography mt={"20px"} mb={"20px"} color={"gray"} variant="h3">
+            Favorites
+          </Typography>
+          <FavoritesContainer>
+            {fav.map((city) => (
+              <FavoriteWeatherCard key={city} currentCity={city} />
+            ))}
+          </FavoritesContainer>
+          <HistoryContainer>
+            <HistoryTitle variant="h3">History</HistoryTitle>
+            <List>
+              {searchHistory.map((city) => (
+                <StyledButton
+                  key={city}
+                  onClick={() => setCurrentCity(city)}
+                >
+                  <Typography>{capitalize(city)}</Typography>
+                </StyledButton>
+              ))}
+            </List>
+          </HistoryContainer>
+        </ContentContainer>
       ) : null}
-    </main>
+    </MainContainer>
   );
 }

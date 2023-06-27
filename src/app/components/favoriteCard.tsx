@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Card, CardContent, Typography, IconButton } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
-import { setInicialCity, toggleFavorite } from '../redux/weatherSlice';
+import {  useSelector } from 'react-redux';
+import { toggleFavorite } from '../redux/weatherSlice';
 import { RootState } from '../redux/store';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useGetWeatherQuery } from '../redux/services/weatherApi';
@@ -30,13 +30,12 @@ const FavoriteWeatherCard: React.FC<FavoriteWeatherCardProps> = ({ currentCity }
     };
 
     return (
-        <Card id="weather-card">
+        <Card id="favorite-weather-card" sx={{width:275}}>
             <CardContent>
-                {/* <img src={`http://openweathermap.org/img/w/${icon}.png`} alt="Weather Icon" /> */}
-                <Typography variant="h6">{name}</Typography>
-                {temp && <Typography variant="h4">{(temp / 10).toFixed(1)}°C</Typography>}
+                <Typography variant="h4">{name}</Typography>
+                {temp && <Typography variant="h5">{(temp - 273.15).toFixed(1)}°C</Typography>}
                 <IconButton onClick={handleToggleFavorite}>
-                    {isFavorite ? <Favorite /> : <FavoriteBorder />}
+                    {isFavorite ? <Favorite style={{ color: '#FF0000' }}/> : <FavoriteBorder />}
                 </IconButton>
             </CardContent>
         </Card>

@@ -2,9 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { WeatherCardProps } from "../components/weatherCard";
 
 export interface WeatherProps {
-  weatherApi:
-  {
-
+  weatherApi: {
     name: string;
     main: {
       temp: number;
@@ -19,32 +17,32 @@ export interface WeatherProps {
       description: string;
       icon: string;
     }[];
-  }
+  };
   favoriteCities: string[];
+  searchHistory: string[];
 }
 
 const initialState: WeatherProps = {
-
-weatherApi:{
-  name: '',
-  main: {
-    temp: 0,
-    feels_like: 0,
-    temp_min: 0,
-    temp_max: 0,
-    pressure: 0,
-    humidity: 0,
-  },
-  weather: [
-    {
-      main: '',
-      description: '',
-      icon: '',
+  weatherApi: {
+    name: "",
+    main: {
+      temp: 0,
+      feels_like: 0,
+      temp_min: 0,
+      temp_max: 0,
+      pressure: 0,
+      humidity: 0,
     },
-  ],
-},
-favoriteCities: [],
-
+    weather: [
+      {
+        main: "",
+        description: "",
+        icon: "",
+      },
+    ],
+  },
+  favoriteCities: [],
+  searchHistory: [],
 };
 
 export const weather = createSlice({
@@ -52,7 +50,7 @@ export const weather = createSlice({
   initialState,
   reducers: {
     setInicialCity: (state, action: PayloadAction<WeatherCardProps>) => {
-      state.weatherApi = action.payload
+      state.weatherApi = action.payload;
     },
 
     toggleFavorite: (state, action: PayloadAction<string>) => {
@@ -66,8 +64,13 @@ export const weather = createSlice({
         state.favoriteCities.splice(index, 1);
       }
     },
+
+    addToSearchHistory: (state, action: PayloadAction<string>) => {
+      const cityName = action.payload;
+      state.searchHistory.push(cityName);
+    },
   },
 });
 
-export const { setInicialCity, toggleFavorite } = weather.actions;
+export const { setInicialCity, toggleFavorite, addToSearchHistory } = weather.actions;
 export default weather.reducer;

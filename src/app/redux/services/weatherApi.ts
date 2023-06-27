@@ -12,24 +12,8 @@ export const weatherApi = createApi({
   }),
   endpoints: (builder) => ({
     getWeather: builder.query<WeatherCardProps, string>({
-      query: (city) => `weather?q=${city}&appid=`,
+      query: (city) => `weather?q=${city}&appid=33367cf2d0f74ff25bc9b9d7c74213e7`,
     }),
   }),
 });
 export const { useGetWeatherQuery } = weatherApi;
-
-
-export const geolocationApi = createApi({
-  reducerPath: 'geolocationApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.opencagedata.com/geocode/v1/' }),
-  endpoints: (builder) => ({
-    getCurrentLocation: builder.query<string, { lat: number; lng: number }>({
-      query: ({ lat, lng }) => `json?q=${lat}+${lng}&key=`,
-    }),
-  }),
-});
-
-
-export const { useGetCurrentLocationQuery } = geolocationApi;
-
-

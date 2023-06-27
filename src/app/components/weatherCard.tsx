@@ -23,10 +23,10 @@ export interface WeatherCardProps {
 }
 
 const WeatherCard: React.FC<WeatherCardProps> = ({ name, main, weather }) => {
-
-  
-  const { temp } = main;
+  const { temp, temp_max, temp_min } = main;
   const { main: weatherMain, description, icon } = weather[0];
+  console.log(weatherMain);
+  
 
   const dispatch = useDispatch();
   const favoriteCities = useSelector((state: RootState) => state.weatherReducer.favoriteCities);
@@ -40,11 +40,13 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ name, main, weather }) => {
     <Card id="weather-card">
       <CardContent>
         <img src={`http://openweathermap.org/img/w/${icon}.png`} alt="Weather Icon" />
-        <Typography variant="h6">{name}</Typography>
-        <Typography variant="h4">{(temp / 10).toFixed(1)}°C</Typography>
+        <Typography variant="h4">{name}</Typography>
+        <Typography variant="h6">{(temp - 273.15).toFixed(1)}°C</Typography>
+        <Typography variant="subtitle1">Max temperature today : {(temp_max - 273.15).toFixed(1)}°C</Typography>
+        <Typography variant="subtitle1">Min temperature today : {(temp_min - 273.15).toFixed(1)}°C</Typography>
         <Typography variant="subtitle1">{description}</Typography>
-        <IconButton onClick={handleToggleFavorite}>
-          {isFavorite ? <Favorite /> : <FavoriteBorder />}
+        <IconButton onClick={handleToggleFavorite} id='favorite-button'> 
+          {isFavorite ? <Favorite style={{ color: '#FF0000' }} /> : <FavoriteBorder />}
         </IconButton>
       </CardContent>
     </Card>
