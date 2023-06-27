@@ -1,95 +1,75 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+'use client'
+
+import { setInicialCity } from "./redux/weatherSlice";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { useGetWeatherQuery } from "./redux/services/weatherApi";
+import WeatherCard from "./components/weatherCard";
+import { useEffect, useState } from "react";
+import { TextField, Button, Grid } from "@mui/material";
+import Form from "./components/form";
+import Link from "next/link";
 
 export default function Home() {
+  const dispatch = useAppDispatch();
+  const name = useAppSelector((state) => state.weatherReducer.weatherApi.name);
+  const main = useAppSelector((state) => state.weatherReducer.weatherApi.main);
+  const weather = useAppSelector((state) => state.weatherReducer.weatherApi.weather);
+  const fav = useAppSelector((state) => state.weatherReducer.favoriteCities);
+  console.log(fav,"fav") ;
+  
+  const [currentCity, setCurrentCity] = useState('belo horizonte');
+
+  const handleSubmit = (city: string) => {
+    setCurrentCity(city);
+  };
+
+
+  // useEffect(() => {
+  //   if ('geolocation' in navigator) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         const latitude = position.coords.latitude;
+  //         const longitude = position.coords.longitude;
+
+  //         fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=23d23199932041c5a9f9ce2abef4678c`)
+  //           .then((response) => response.json())
+  //           .then((data) => {
+  //             const city = data.results[0].components.city;
+  //             setCurrentCity(city); // Atualiza a cidade atual
+  //           })
+  //           .catch((error) => {
+  //             console.error("Erro ao obter a cidade atual:", error);
+  //           });
+  //       },
+  //       (error) => {
+  //         console.error('Erro ao obter a localização:', error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error('Geolocalização não é suportada no navegador.');
+  //   }
+  // }, []);
+
+
+  const { isLoading, isFetching, data, error } = useGetWeatherQuery(currentCity);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setInicialCity(data));
+    }
+  }, [data, dispatch]);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main style={{ maxWidth: 1200, marginInline: "auto", padding: 20 }}>
+      {isLoading || isFetching ? (
+        <p>Loading...</p>
+      ) : data ? (
+        <div style={{ marginBottom: "4rem", textAlign: "center" }}>
+          <Form onSubmit={handleSubmit} />
+          <WeatherCard name={name} main={main} weather={weather} />
+          <Link href="/favorites">Favorites</Link>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      ) : null}
     </main>
-  )
+  );
 }

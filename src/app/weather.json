@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Belo Horizonte",
+    "temp": 45,
+    "pressao":15
+  },
+  {
+
+    "name": "Fortaleza",
+    "temp": 60,
+    "pressao":16
+  },
+  {
+
+    "name": "São Paulo",
+    "temp": 80,
+    "pressao":17
+  }
+]
