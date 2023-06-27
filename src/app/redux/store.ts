@@ -3,7 +3,6 @@ import weatherReducer from "./weatherSlice";
 import { weatherApi, geolocationApi } from "./services/weatherApi";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
 
-
 export const store = configureStore({
   reducer: {
     weatherReducer,

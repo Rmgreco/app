@@ -5,7 +5,7 @@ import { useGetWeatherQuery } from "../redux/services/weatherApi";
 import WeatherCard from "../components/weatherCard";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { store } from "../redux/store";
+
 
 
 export default function Home() {

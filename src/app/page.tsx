@@ -8,21 +8,11 @@ import { useEffect, useState } from "react";
 import { TextField, Button, Grid } from "@mui/material";
 import Form from "./components/form";
 import Link from "next/link";
+import FavoriteWeatherCard from "./components/favoriteCard";
 
 export default function Home() {
-  const dispatch = useAppDispatch();
-  const name = useAppSelector((state) => state.weatherReducer.weatherApi.name);
-  const main = useAppSelector((state) => state.weatherReducer.weatherApi.main);
-  const weather = useAppSelector((state) => state.weatherReducer.weatherApi.weather);
-  const fav = useAppSelector((state) => state.weatherReducer.favoriteCities);
 
-  
-  const [currentCity, setCurrentCity] = useState('belo horizonte');
-
-  const handleSubmit = (city: string) => {
-    setCurrentCity(city);
-  };
-  // useEffect(() => {
+    // useEffect(() => {
   //   if ('geolocation' in navigator) {
   //     navigator.geolocation.getCurrentPosition(
   //       (position) => {
@@ -47,7 +37,19 @@ export default function Home() {
   //     console.error('Geolocalização não é suportada no navegador.');
   //   }
   // }, []);
+  const dispatch = useAppDispatch();
+  const name = useAppSelector((state) => state.weatherReducer.weatherApi.name);
+  const main = useAppSelector((state) => state.weatherReducer.weatherApi.main);
+  const weather = useAppSelector((state) => state.weatherReducer.weatherApi.weather);
+  const fav = useAppSelector((state) => state.weatherReducer.favoriteCities);
+  console.log(fav);
 
+  
+  const [currentCity, setCurrentCity] = useState('belo horizonte');
+
+  const handleSubmit = (city: string) => {
+    setCurrentCity(city);
+  };
 
   const { isLoading, isFetching, data, error } = useGetWeatherQuery(currentCity);
 
@@ -65,6 +67,9 @@ export default function Home() {
         <div style={{ marginBottom: "4rem", textAlign: "center" }}>
           <Form onSubmit={handleSubmit} />
           <WeatherCard name={name} main={main} weather={weather} />
+          {fav.map((city) => (
+            <FavoriteWeatherCard key={city} currentCity={city} />
+          ))}
           <Link href="/favorites">Favorites</Link>
         </div>
       ) : null}

@@ -23,6 +23,8 @@ export interface WeatherCardProps {
 }
 
 const WeatherCard: React.FC<WeatherCardProps> = ({ name, main, weather }) => {
+
+  
   const { temp } = main;
   const { main: weatherMain, description, icon } = weather[0];
 
