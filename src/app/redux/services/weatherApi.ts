@@ -12,7 +12,7 @@ export const weatherApi = createApi({
   }),
   endpoints: (builder) => ({
     getWeather: builder.query<WeatherCardProps, string>({
-      query: (city) => `weather?q=${city}&appid=0bfd1f48da1715cefa9cc403a456bd5b`,
+      query: (city) => `weather?q=${city}&appid=33367cf2d0f74ff25bc9b9d7c74213e7`,
     }),
   }),
 });
