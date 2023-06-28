@@ -17,6 +17,11 @@ export interface WeatherProps {
       description: string;
       icon: string;
     }[];
+    wind: {
+      speed: number,
+      deg: number,
+      gust: number
+    },
   };
   favoriteCities: string[];
   searchHistory: string[];
@@ -40,6 +45,11 @@ const initialState: WeatherProps = {
         icon: "",
       },
     ],
+    wind: {
+      speed: 0,
+      deg: 349,
+      gust: 1.18
+    },
   },
   favoriteCities: [],
   searchHistory: [],

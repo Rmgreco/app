@@ -58,6 +58,7 @@ export default function Home() {
   const name = useAppSelector((state) => state.weatherReducer.weatherApi.name);
   const main = useAppSelector((state) => state.weatherReducer.weatherApi.main);
   const weather = useAppSelector((state) => state.weatherReducer.weatherApi.weather);
+  const wind = useAppSelector((state) => state.weatherReducer.weatherApi.wind);
   const fav = useAppSelector((state) => state.weatherReducer.favoriteCities);
   const searchHistory = useAppSelector((state) => state.weatherReducer.searchHistory);
   const [currentCity, setCurrentCity] = useState('belo horizonte');
@@ -91,7 +92,7 @@ export default function Home() {
       ) : data ? (
         <ContentContainer>
           <Form onSubmit={handleSubmit} />
-          <WeatherCard name={name} main={main} weather={weather} />
+          <WeatherCard name={name} main={main} weather={weather} wind={wind}/>
           <Typography mt={"20px"} mb={"20px"} color={"gray"} variant="h3">
             Favorites
           </Typography>
