@@ -1,8 +1,8 @@
 'use client'
 
 import { styled } from "@mui/system";
-import { Button, Typography, List, ListItem } from "@mui/material";
-import { setInicialCity, addToSearchHistory } from "./redux/weatherSlice";
+import { Button, Typography, List, ListItem, capitalize } from "@mui/material";
+import { setInicialCity, addToSearchHistory, clearSearchHistory } from "./redux/weatherSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { useGetWeatherQuery } from "./redux/services/weatherApi";
 import WeatherCard from "./components/weatherCard";
@@ -62,10 +62,6 @@ export default function Home() {
   const searchHistory = useAppSelector((state) => state.weatherReducer.searchHistory);
   const [currentCity, setCurrentCity] = useState('belo horizonte');
 
-  const handleSubmit = (city: string) => {
-    setCurrentCity(city);
-  };
-
   const { isLoading, isFetching, data, error } = useGetWeatherQuery(currentCity);
 
   useEffect(() => {
@@ -77,8 +73,15 @@ export default function Home() {
     }
   }, [data, dispatch, currentCity, searchHistory]);
 
-  const capitalize = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+  const handleSubmit = (city: string) => {
+    if (city.trim() !== "") {
+      setCurrentCity(city);
+    }
+  };
+
+  const handleClearHistory = () => {
+    // Limpar o histórico
+    dispatch(clearSearchHistory());
   };
 
   return (
@@ -95,10 +98,10 @@ export default function Home() {
           <FavoritesContainer>
             {fav.length > 0 ? fav.map((city) => (
               <FavoriteWeatherCard key={city} currentCity={city} />
-            )):
-            <Typography mt={"20px"} mb={"20px"} color={"gray"} variant="subtitle2">
-            No favorite cities
-          </Typography>
+            )) :
+              <Typography mt={"20px"} mb={"20px"} color={"gray"} variant="subtitle2">
+                No favorite cities
+              </Typography>
             }
           </FavoritesContainer>
           <HistoryContainer>
@@ -113,6 +116,11 @@ export default function Home() {
                 </StyledButton>
               ))}
             </List>
+            {searchHistory.length > 0 && (
+              <Button variant="outlined" onClick={handleClearHistory}>
+                Clear History
+              </Button>
+            )}
           </HistoryContainer>
         </ContentContainer>
       ) : null}

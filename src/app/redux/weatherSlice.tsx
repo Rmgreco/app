@@ -69,8 +69,12 @@ export const weather = createSlice({
       const cityName = action.payload;
       state.searchHistory.push(cityName);
     },
+
+    clearSearchHistory: (state) => {
+      state.searchHistory = [];
+    },
   },
 });
 
-export const { setInicialCity, toggleFavorite, addToSearchHistory } = weather.actions;
+export const { setInicialCity, toggleFavorite, addToSearchHistory, clearSearchHistory } = weather.actions;
 export default weather.reducer;
