@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, IconButton } from '@mui/material';
+import { Card, CardContent, Typography, IconButton, capitalize } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleFavorite } from '../redux/weatherSlice';
@@ -42,7 +42,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ name, main, weather }) => {
         <Typography variant="h6">{(temp - 273.15).toFixed(1)}°C</Typography>
         <Typography variant="subtitle1">Max temperature today : {(temp_max - 273.15).toFixed(1)}°C</Typography>
         <Typography variant="subtitle1">Min temperature today : {(temp_min - 273.15).toFixed(1)}°C</Typography>
-        <Typography variant="subtitle1">{description}</Typography>
+        <Typography variant="subtitle1">{capitalize(description)}</Typography>
         <IconButton onClick={handleToggleFavorite} id='favorite-button'> 
           {isFavorite ? <Favorite style={{ color: '#FF0000' }} /> : <FavoriteBorder />}
         </IconButton>
