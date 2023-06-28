@@ -23,6 +23,7 @@ const Form: React.FC<FormProps> = ({ onSubmit }) => {
             value={inputCity}
             onChange={(e) => setInputCity(e.target.value)}
             fullWidth
+            data-testid="form"
           />
         </Grid>
         <Grid item xs={3}>

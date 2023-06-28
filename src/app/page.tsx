@@ -2,7 +2,7 @@
 
 import { styled } from "@mui/system";
 import { Button, Typography, List, ListItem, capitalize } from "@mui/material";
-import { setInicialCity, addToSearchHistory, clearSearchHistory } from "./redux/weatherSlice";
+import { setInicialCity, addToSearchHistory, clearSearchHistory, toggleFavorite } from "./redux/weatherSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { useGetWeatherQuery } from "./redux/services/weatherApi";
 import WeatherCard from "./components/weatherCard";
@@ -80,6 +80,11 @@ export default function Home() {
     }
   };
 
+  const handleFavorites = (city: string) => {
+    dispatch(toggleFavorite(city));
+  };
+  
+
   const handleClearHistory = () => {
     // Limpar o histórico
     dispatch(clearSearchHistory());
@@ -92,7 +97,8 @@ export default function Home() {
       ) : data ? (
         <ContentContainer>
           <Form onSubmit={handleSubmit} />
-          <WeatherCard name={name} main={main} weather={weather} wind={wind}/>
+          <WeatherCard name={name} main={main} weather={weather} wind={wind} isFavorite={fav.includes(name)}
+            toggleFavorite={() => handleFavorites(name)} />
           <Typography mt={"20px"} mb={"20px"} color={"gray"} variant="h3">
             Favorites
           </Typography>
