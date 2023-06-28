@@ -4,7 +4,6 @@ import { WeatherCardProps } from '@/app/components/weatherCard';
 
 export const weatherApi = createApi({
   reducerPath: 'weatherApi',
-  refetchOnFocus: true,
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.openweathermap.org/data/2.5/',
   }),
