@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { WeatherProps } from '../weatherSlice';
 import { WeatherCardProps } from '@/app/components/weatherCard';
 
 
@@ -8,8 +7,8 @@ export const weatherApi = createApi({
   refetchOnFocus: true,
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.openweathermap.org/data/2.5/',
-
   }),
+
   endpoints: (builder) => ({
     getWeather: builder.query<WeatherCardProps, string>({
       query: (city) => `weather?q=${city}&appid=33367cf2d0f74ff25bc9b9d7c74213e7`,

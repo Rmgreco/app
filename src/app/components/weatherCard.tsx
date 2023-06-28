@@ -25,8 +25,6 @@ export interface WeatherCardProps {
 const WeatherCard: React.FC<WeatherCardProps> = ({ name, main, weather }) => {
   const { temp, temp_max, temp_min } = main;
   const { main: weatherMain, description, icon } = weather[0];
-  console.log(weatherMain);
-  
 
   const dispatch = useDispatch();
   const favoriteCities = useSelector((state: RootState) => state.weatherReducer.favoriteCities);
