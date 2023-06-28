@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, Typography, IconButton, capitalize } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
+import Image from 'next/image';
 
 
 export interface WeatherCardProps {
@@ -36,7 +37,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ name, main, weather, wind, is
   return (
     <Card id="weather-card">
       <CardContent>
-        <img src={`http://openweathermap.org/img/w/${icon}.png`} alt="Weather Icon" />
+        <Image src={`http://openweathermap.org/img/w/${icon}.png`} alt="Weather Icon" width={50} height={50}></Image>
         <Typography variant="h4" data-testeid="city_title">{name}</Typography>
         <Typography variant="h6">{(temp - 273.15).toFixed(1)}°C</Typography>
         <Typography  variant="subtitle1">Max temperature today : {(temp_max - 273.15).toFixed(1)}°C</Typography>
