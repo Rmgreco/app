@@ -25,6 +25,7 @@ export interface WeatherProps {
   };
   favoriteCities: string[];
   searchHistory: string[];
+  list: WeatherProps[];
 }
 
 const initialState: WeatherProps = {
@@ -53,6 +54,7 @@ const initialState: WeatherProps = {
   },
   favoriteCities: [],
   searchHistory: [],
+  list: [],
 };
 
 export const weather = createSlice({
@@ -62,7 +64,9 @@ export const weather = createSlice({
     setInicialCity: (state, action: PayloadAction<WeatherCardProps>) => {
       state.weatherApi = action.payload;
     },
-
+    setForecast: (state, action: PayloadAction<WeatherProps>) => {
+      state.list = action.payload.list;
+    },  
     toggleFavorite: (state, action: PayloadAction<string>) => {
       const cityName = action.payload;
       const index = state.favoriteCities.indexOf(cityName);

@@ -4,7 +4,7 @@ import { styled } from "@mui/system";
 import { Button, Typography, List, ListItem, capitalize } from "@mui/material";
 import { setInicialCity, addToSearchHistory, clearSearchHistory, toggleFavorite } from "./redux/weatherSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import { useGetWeatherQuery } from "./redux/services/weatherApi";
+import { useGetForecastQuery, useGetWeatherQuery } from "./redux/services/weatherApi";
 import WeatherCard from "./components/weatherCard";
 import { useEffect, useState } from "react";
 import Form from "./components/form";
@@ -61,9 +61,14 @@ export default function Home() {
   const wind = useAppSelector((state) => state.weatherReducer.weatherApi.wind);
   const fav = useAppSelector((state) => state.weatherReducer.favoriteCities);
   const searchHistory = useAppSelector((state) => state.weatherReducer.searchHistory);
+  const forecast = useAppSelector((state) => state.weatherReducer.list);
+
   const [currentCity, setCurrentCity] = useState('belo horizonte');
 
   const { isLoading, isFetching, data, error } = useGetWeatherQuery(currentCity);
+
+  // const {  data: dataForecast } = useGetForecastQuery(currentCity);
+  // console.log(dataForecast, "aqui quero");
 
   useEffect(() => {
     if (data) {
@@ -97,7 +102,7 @@ export default function Home() {
       ) : data ? (
         <ContentContainer>
           <Form onSubmit={handleSubmit} />
-          <WeatherCard name={name} main={main} weather={weather} wind={wind} isFavorite={fav.includes(name)}
+          <WeatherCard currentCity={currentCity} name={name} main={main} weather={weather} wind={wind} isFavorite={fav.includes(name)}
             toggleFavorite={() => handleFavorites(name)} />
           <Typography mt={"20px"} mb={"20px"} color={"gray"} variant="h3">
             Favorites
